@@ -21,32 +21,23 @@
  function findSearchTermInBooks(searchTerm, scannedTextObj) {
     /** You will need to implement your search and 
      * return the appropriate object here. 
-     * 
-     * I was stumped for 30 minutes realizing I needed to call the first element of the array at index 0.
-     * after that solving the solution was straight forward.  I console.log-ed typeof() many times for each nested layer
-     * and the developer tools console.  Unit testing was sort of overlooked at my bootcamp and yes we used mocha and jazmine but
-     * I didn't learn  
-     * 
-     * 
      * */
-
     var result = {
         "SearchTerm": "",
         "Results": []
      };
-
-     //Test5 made me realize I still wanted the searchTerm to show in the results even if not found in the book
-     //before it was in for loop but i moved it out.
+    
+    
      result["SearchTerm"] = searchTerm
      
+    
      for (var i = 0; i < scannedTextObj[0]["Content"].length; i++){
          if (scannedTextObj[0]["Content"][i]["Text"].includes(searchTerm)) {
-             
              let resultsObj = {}
              resultsObj["ISBN"] = scannedTextObj[0]["ISBN"] 
              resultsObj["Page"] = scannedTextObj[0]["Content"][i]["Page"]
              resultsObj["Line"] = scannedTextObj[0]["Content"][i]["Line"] 
-            result["Results"].push(resultsObj)
+             result["Results"].push(resultsObj)
          }
         
      }
@@ -164,10 +155,9 @@ if (test4result.Results.length == 2) {
     console.log("Received:", test4result.Results.length);
 }
 
-//Testing to see if negative
+//Testing to see if "" or a negative result appears
 const test5result = findSearchTermInBooks("Daniel", twentyLeaguesIn);
 if (JSON.stringify(twentyLeaguesOutD) === JSON.stringify(test5result)) {
-    console.log(JSON.stringify(test5result))
     console.log("PASS: Test 5");
 } else {
     console.log("FAIL: Test 5");
