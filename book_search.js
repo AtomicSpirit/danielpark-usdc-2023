@@ -20,14 +20,39 @@
  * */ 
  function findSearchTermInBooks(searchTerm, scannedTextObj) {
     /** You will need to implement your search and 
-     * return the appropriate object here. */
+     * return the appropriate object here. 
+     * 
+     * I was stumped for 30 minutes realizing I needed to call the first element of the array at index 0.
+     * after that solving the solution was straight forward.  I console.log-ed typeof() many times for each nested layer
+     * and the developer tools console.  Unit testing was sort of overlooked at my bootcamp and yes we used mocha and jazmine but
+     * I didn't learn  
+     * 
+     * 
+     * */
 
     var result = {
         "SearchTerm": "",
         "Results": []
-    };
-    
-    return result; 
+     };
+
+     //Test5 made me realize I still wanted the searchTerm to show in the results even if not found in the book
+     //before it was in for loop but i moved it out.
+     result["SearchTerm"] = searchTerm
+     
+     for (var i = 0; i < scannedTextObj[0]["Content"].length; i++){
+         if (scannedTextObj[0]["Content"][i]["Text"].includes(searchTerm)) {
+             
+             let resultsObj = {}
+             resultsObj["ISBN"] = scannedTextObj[0]["ISBN"] 
+             resultsObj["Page"] = scannedTextObj[0]["Content"][i]["Page"]
+             resultsObj["Line"] = scannedTextObj[0]["Content"][i]["Line"] 
+            result["Results"].push(resultsObj)
+         }
+        
+     }
+     
+        return result;  
+     
 }
 
 /** Example input object. */
@@ -67,6 +92,21 @@ const twentyLeaguesOut = {
     ]
 }
 
+const twentyLeaguesOutt = {
+    "SearchTerm": "The",
+    "Results": [
+        {
+            "ISBN": "9780000528531",
+            "Page": 31,
+            "Line": 8
+        }
+    ]
+}
+const twentyLeaguesOutD = {
+    "SearchTerm": "Daniel",
+    "Results": []
+}
+
 /*
  _   _ _   _ ___ _____   _____ _____ ____ _____ ____  
 | | | | \ | |_ _|_   _| |_   _| ____/ ___|_   _/ ___| 
@@ -101,4 +141,36 @@ if (test2result.Results.length == 1) {
     console.log("FAIL: Test 2");
     console.log("Expected:", twentyLeaguesOut.Results.length);
     console.log("Received:", test2result.Results.length);
+}
+
+//Testing to see if the feature is case sensetive
+const test3result = findSearchTermInBooks("The", twentyLeaguesIn);
+if (JSON.stringify(twentyLeaguesOutt) === JSON.stringify(test3result)) {
+    console.log("PASS: Test 3");
+} else {
+    console.log("FAIL: Test 3");
+    console.log("Expected:", twentyLeaguesOutt);
+    console.log("Received:", test3result);
+}
+
+
+//Testing to see if the feature pick up more than 1 right answer.
+const test4result = findSearchTermInBooks("and", twentyLeaguesIn); 
+if (test4result.Results.length == 2) {
+    console.log("PASS: Test 4");
+} else {
+    console.log("FAIL: Test 4");
+    console.log("Expected:", twentyLeaguesOut.Results.length);
+    console.log("Received:", test4result.Results.length);
+}
+
+//Testing to see if negative
+const test5result = findSearchTermInBooks("Daniel", twentyLeaguesIn);
+if (JSON.stringify(twentyLeaguesOutD) === JSON.stringify(test5result)) {
+    console.log(JSON.stringify(test5result))
+    console.log("PASS: Test 5");
+} else {
+    console.log("FAIL: Test 5");
+    console.log("Expected:", twentyLeaguesOutD);
+    console.log("Received:", test5result);
 }
